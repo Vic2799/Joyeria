@@ -19,43 +19,52 @@ fetch(`${API_URL}/products`)
 
 function showMenu() {
     //  const value = 1;
-    const category = document.querySelector('#menu');
-    category.innerHTML = '';
-    const ul = document.createElement('ul');
-    ul.classList.add('tabs');
-    const li = document.createElement('li');
-    const a = document.createElement('a');
-    const span = document.createElement('span');
-    span.textContent = 'Todos';
-    span.classList.add('tab-text');
-    a.onclick = (() => showProducts(0));
-    li.dataset.id = 0;
-    a.appendChild(span);
-    li.appendChild(a);
-    ul.appendChild(li);
+    const categoryMenu = document.querySelector('#menu');
+    categoryMenu.innerHTML = '';
+
+    const categoryButton = document.createElement('button');
+    categoryButton.classList.add('btn', 'btn-secondary', 'px-4', 'py-3');
+    categoryButton.type = 'button';
+    categoryButton.textContent = 'Todos';
+    categoryButton.onclick = (() => {
+        const cats = document.querySelectorAll('#menu .btn');
+        cats.forEach(btn => {
+            btn.classList.add('btn-secondary');
+            btn.classList.remove('btn-primary');
+        });
+
+        categoryButton.classList.remove('btn-secondary');
+        categoryButton.classList.add('btn-primary');
+        showProducts(0);
+    });
+    categoryButton.click(); // show 'Todos' as default
+
+    categoryMenu.appendChild(categoryButton);
 
     fetch(`${API_URL}/categories`)
         .then(response => response.json())
         .then((categories) => {
             categories.forEach((category) => {
-                const li = document.createElement('li');
-                const a = document.createElement('a');
-                const span = document.createElement('span');
-                //a.href= '#tab'+category.id;
-                a.onclick = (() => showProducts(category.id));
-                span.textContent = category.title;
-                span.classList.add('tab-text');
+                const categoryButton = document.createElement('button');
+                categoryButton.classList.add('btn', 'btn-secondary', 'px-4', 'py-3');
+                categoryButton.type = 'button';
+                categoryButton.textContent = category.title;
+                categoryButton.onclick = (() => {
+                    const cats = document.querySelectorAll('#menu .btn');
+                    cats.forEach(btn => {
+                        btn.classList.add('btn-secondary');
+                        btn.classList.remove('btn-primary');
+                    });
 
-                li.dataset.id = category.id;
-                a.appendChild(span);
-                li.appendChild(a);
-                ul.appendChild(li);
-
+                    categoryButton.classList.remove('btn-secondary');
+                    categoryButton.classList.add('btn-primary');
+                    showProducts(category.id);
+                });
+                categoryMenu.appendChild(categoryButton);
             });
-            category.appendChild(ul);
         }).catch(() => {
             const errorModalBody = document.querySelector('#errorModal .modal-content > div.modal-body');
-            errorModalBody.textContent = 'Hubo un problema al obtener las categorías, por favor intente más tarde. ';
+            errorModalBody.textContent = 'Hubo un problema al obtener las categorías, por favor intente más tarde.';
             $('#errorModal').modal('show');
         });
 
@@ -88,7 +97,8 @@ function showProductCard(product) {
     card.style.minWidth = '10rem';
 
     const img = document.createElement('img');
-    img.classList.add('card-img-top');
+    img.classList.add('card-img-top', 'm-auto');
+    img.style = 'max-width: 158px;'
     img.src = product.image_url || 'https://cdn.onlinewebfonts.com/svg/img_148071.png';
 
     const cardBody = document.createElement('div');
@@ -108,6 +118,10 @@ function showProductCard(product) {
     cardAddButton.onclick = () => {
         putQuotationProduct(product.id, 1)
             .then(() => {
+                cardAddButton.disabled = true;
+                cardAddButton.classList.remove('btn-primary');
+                cardAddButton.textContent = 'Agregado';
+
                 const toast = document.createElement('div');
                 toast.innerHTML = successToastHtml;
                 toastContainer.prepend(toast.firstElementChild);

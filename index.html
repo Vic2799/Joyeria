@@ -13,7 +13,6 @@
     <!-- Place favicon.ico in the root directory -->
 
     <link rel="stylesheet" href="css/normalize.css">
-    <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
         integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
@@ -36,19 +35,18 @@
     <div class="jumbotron text-center">
         <h1>Cotizador de envíos</h1>
         <div align=right>
-            <button id="carrito" href="cotizar.html" type="submit">Carrito</button>
+            <a href="cotizar.html" align=right class="btn btn-primary" type="submit">Ir a la Cotizaci&oacute;n</a>
         </div>
-
     </div>
-    <div class="wrap">
-        <div id="menu" class="wrap">
 
-
-        </div>
-        <div class="container">
-            <div id="result" class="card-deck">
-
+    <div class="container">
+        <div class="d-flex justify-content-center mb-4">
+            <div id="menu" class="btn-group btn-group flex-wrap" role="group" aria-label="Categories">
             </div>
+        </div>
+
+        <div id="result" class="card-deck">
+
         </div>
 
     </div>
