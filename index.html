@@ -14,10 +14,10 @@
 
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/style.css">
-    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
-        integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
         integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
+        integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 
 
     <meta name="theme-color" content="#fafafa">
@@ -27,6 +27,11 @@
     <!--[if IE]>
         <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
     <![endif]-->
+    <div class="position-sticky" style="z-index:1055;top:0">
+        <div id="toastContainer" class="position-absolute m-3" style="top:0;right:0;">
+
+        </div>
+    </div>
 
     <div class="jumbotron text-center">
         <h1>Cotizador de envíos</h1>
@@ -36,7 +41,6 @@
 
     </div>
     <div class="wrap">
-
         <div id="menu" class="wrap">
 
 
@@ -67,6 +71,8 @@
             </div>
         </div>
     </div>
+
+
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="js/vendor/modernizr-3.11.2.min.js"></script>
     <script src="js/plugins.js"></script>

@@ -94,12 +94,6 @@ function showProductCard(product) {
     const cardBody = document.createElement('div');
     cardBody.classList.add('card-body');
 
-    // const addIconLink = document.createElement('a');
-    // addIconLink.href = '#';
-
-    // const addIcon = document.createElement('i');
-    // addIcon.classList.add('fa', 'fa-plus-square', 'fa-2x', 'ml-1', 'text-primary', 'shadow-sm');
-
     const cardTitle = document.createElement('h6');
     cardTitle.classList.add('card-text');
 
@@ -112,14 +106,25 @@ function showProductCard(product) {
     cardAddButton.classList.add('btn', 'btn-primary', 'w-100');
     cardAddButton.textContent = 'Agregar';
     cardAddButton.onclick = () => {
-        // $('#successToast').toast('show');
-        // $('#errorToast').toast('show');
+        putQuotationProduct(product.id, 1)
+            .then(() => {
+                const toast = document.createElement('div');
+                toast.innerHTML = successToastHtml;
+                toastContainer.prepend(toast.firstElementChild);
+
+                $('#toastContainer .toast:first').toast('show');
+            })
+            .catch(() => {
+                const toast = document.createElement('div');
+                toast.innerHTML = errorToastHtml;
+                toastContainer.prepend(toast.firstElementChild);
+
+                $('#toastContainer .toast:first').toast('show');
+            });
     }
 
     const separator = document.createElement('hr');
     separator.classList.add('my-1');
-
-    // addIconLink.appendChild(addIcon);
 
     cardBody.appendChild(cardTitle);
     cardFooter.appendChild(cardAddButton);
@@ -130,3 +135,29 @@ function showProductCard(product) {
 
     productList.appendChild(card);
 }
+
+const successToastHtml = `
+<div class="toast bg-success" role="alert" aria-live="assertive" aria-atomic="true"
+    data-delay="3000">
+    <div class="toast-header">
+        <strong class="mr-auto">Producto agregado correctamente</strong>
+        <button type="button" class="ml-2 mb-1 close stretched-link" data-dismiss="toast"
+            aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+</div>
+`;
+
+const errorToastHtml = `
+<div class="toast bg-danger" role="alert" aria-live="assertive" aria-atomic="true"
+    data-delay="3000">
+    <div class="toast-header">
+        <strong class="mr-auto">Hubo un error al intentar agregar el producto</strong>
+        <button type="button" class="ml-2 mb-1 close stretched-link" data-dismiss="toast"
+            aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+</div>
+`;
