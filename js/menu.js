@@ -1,5 +1,10 @@
+'use strict';
+
+import { putQuotationProduct } from '../js/db/quotation.js'
+
 let productList;
 const API_URL = 'https://itacate.herokuapp.com/api/v1';
+
 fetch(`${API_URL}/products`)
     .then(response => response.json())
     .then((products) => {
@@ -73,17 +78,14 @@ function showProducts(categoryId) {
             showProductCard(product);
         })
     }
-
-
 }
-function showProductCard(product) {
-    const productResult = document.querySelector('#result');
 
-    const div = document.createElement('div');
-    div.classList.add('col-sm-4', 'col-lg-3', 'py-2');
+function showProductCard(product) {
+    const productList = document.querySelector('#result');
 
     const card = document.createElement('div');
-    card.classList.add('card', 'mb-4', 'h-100');
+    card.classList.add('card', 'mb-4', 'w-100');
+    card.style.minWidth = '10rem';
 
     const img = document.createElement('img');
     img.classList.add('card-img-top');
@@ -92,19 +94,39 @@ function showProductCard(product) {
     const cardBody = document.createElement('div');
     cardBody.classList.add('card-body');
 
+    // const addIconLink = document.createElement('a');
+    // addIconLink.href = '#';
+
+    // const addIcon = document.createElement('i');
+    // addIcon.classList.add('fa', 'fa-plus-square', 'fa-2x', 'ml-1', 'text-primary', 'shadow-sm');
+
     const cardTitle = document.createElement('h6');
     cardTitle.classList.add('card-text');
 
     cardTitle.textContent = `${product.title}`;
 
+    const cardFooter = document.createElement('div');
+    cardFooter.classList.add('card-footer');
+
+    const cardAddButton = document.createElement('button');
+    cardAddButton.classList.add('btn', 'btn-primary', 'w-100');
+    cardAddButton.textContent = 'Agregar';
+    cardAddButton.onclick = () => {
+        // $('#successToast').toast('show');
+        // $('#errorToast').toast('show');
+    }
+
+    const separator = document.createElement('hr');
+    separator.classList.add('my-1');
+
+    // addIconLink.appendChild(addIcon);
+
     cardBody.appendChild(cardTitle);
-
-
+    cardFooter.appendChild(cardAddButton);
     card.appendChild(img);
-    card.append(document.createElement('hr')); // add separator
+    card.appendChild(separator); // add separator
     card.appendChild(cardBody);
+    card.appendChild(cardFooter);
 
-    div.appendChild(card);
-
-    productResult.appendChild(div);
+    productList.appendChild(card);
 }
