@@ -1,6 +1,6 @@
 'use strict';
 
-import { putQuotationProduct } from '../js/db/quotation.js'
+import { putQuotationProduct, getProductById } from '../js/db/quotation.js'
 
 let productList;
 const API_URL = 'https://itacate.herokuapp.com/api/v1';
@@ -82,7 +82,6 @@ function showProducts(categoryId) {
             })
 
     } else {
-
         productList.forEach((product) => {
             showProductCard(product);
         })
@@ -115,6 +114,7 @@ function showProductCard(product) {
     const cardAddButton = document.createElement('button');
     cardAddButton.classList.add('btn', 'btn-primary', 'w-100');
     cardAddButton.textContent = 'Agregar';
+
     cardAddButton.onclick = () => {
         putQuotationProduct(product.id, 1)
             .then(() => {
@@ -140,8 +140,21 @@ function showProductCard(product) {
     const separator = document.createElement('hr');
     separator.classList.add('my-1');
 
+
     cardBody.appendChild(cardTitle);
-    cardFooter.appendChild(cardAddButton);
+
+    // show add product button disabled if it has already been added to the quotation
+    getProductById(product.id)
+        .then(product => {
+            if (product !== undefined && product.quantity > 0) {
+                cardAddButton.disabled = true;
+                cardAddButton.classList.remove('btn-primary');
+                cardAddButton.textContent = 'Agregado';
+            }
+
+            cardFooter.appendChild(cardAddButton);
+        });
+
     card.appendChild(img);
     card.appendChild(separator); // add separator
     card.appendChild(cardBody);
