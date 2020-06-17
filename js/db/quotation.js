@@ -48,7 +48,23 @@ export function getAllProducts() {
             });
     });
 }
+export function getAllCategories() {
+    return new Promise((resolve, reject) => {
+        getDatabase()
+            .then(db => {
+                const transaction = db.transaction('categories');
+                const objectStore = transaction.objectStore('categories');
 
+                const request = objectStore.getAll();
+
+                request.onsuccess = (event) => {
+                    resolve(event.target.result);
+                }
+
+                request.onerror = () => reject();
+            });
+    });
+}
 export function putQuotationProduct(productId, productQuantity) {
     return new Promise((resolve, reject) => {
         getDatabase()
