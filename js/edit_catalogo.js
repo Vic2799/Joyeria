@@ -1,57 +1,53 @@
 'use strict';
 
-import { getAllCategories, putQuotationProduct, removeProductFromQuotation } from '../js/db/quotation.js'
-
-showQuotationCategories();
-
 
 const API_URL = 'https://itacate.herokuapp.com/api/v1';
+let categoryList;
 
-function showQuotationCategories() {
-    showLoading();
-
-    const productList = document.querySelector('#result');
-
-    getAllCategories()
-        .then((quotationCategories) => {
-            const registries = new Map();
-
-            const fetchData = async () => {
-                productList.innerHTML = ''; // clean product list
-
-                const ids = quotationCategories.map((results) => {
-                    registries.set(results.category_id, results.title);
-
-                    return results.category_id;
-                }).join(';')
-
-                const response = await fetch(`${API_URL}/categories/${ids}`);
-                const results = await response.json();
-
-                if (ids && results.length > 0) {
-                    return results;
-                } else {
-                    return null;
-                }
-            };
+fetch(`${API_URL}/categories`)
+    .then(response => response.json())
+    .then((categories) => {
+        categoryList = categories;
+    })
+    .then(() => showCategories())
+    .catch(() => {
+        const errorModalBody = document.querySelector('#errorModal .modal-content > div.modal-body');
+        errorModalBody.textContent = 'Hubo un error obteniendo las categorias. Favor de intentar de nuevo.';
+        $('#errorModal').modal('show');
+    });
 
 
-        });
+function showCategories(categoryId) {
+    const categoryResult = document.querySelector('#result');
+    categoryResult.innerHTML = '';
+    if (categoryId) {
+        categoryList.filter((category) => categories.id === categoryId)
+            .forEach((category) => {
+                showCategoryCard(category);
+            })
+
+    } else {
+        categoryList.forEach((category) => {
+            showCategoryCard(category);
+        })
+    }
+
+
+
 }
 
-function showCategoryCard(category, quantity) {
-    const productList = document.querySelector('#result');
+
+function showCategoryCard(category) {
+    const categoryList = document.querySelector('#result');
 
     const div = document.createElement('div');
     div.classList.add('col-sm-4', 'col-lg-3', 'py-2');
+     card.style.minWidth = '10rem';
 
-    const card = document.createElement('div');
-    card.classList.add('card', 'mb-4', 'w-100');
-    card.style.minWidth = '10rem';
 
-    // const img = document.createElement('img');
-    // img.classList.add('card-img-top');
-    // img.src = product.image_url || 'https://cdn.onlinewebfonts.com/svg/img_148071.png';
+    const img = document.createElement('img');
+     img.classList.add('card-img-top');
+     img.src = product.image_url || 'https://cdn.onlinewebfonts.com/svg/img_148071.png';
 
     const cardBody = document.createElement('div');
     cardBody.classList.add('card-body');
@@ -66,8 +62,8 @@ function showCategoryCard(category, quantity) {
     removeProductButton.classList.add('btn', 'btn-link');
     removeProductButton.textContent = 'Eliminar';
     removeProductButton.onclick = () => {
-        removeProductFromQuotation(category.id)
-            .then(() => showQuotationProducts())
+        removeCategoryFromQuotation(category.id)
+            .then(() => showQuotationCategories())
             .catch(() =>
                 showModal('Error', 'Hubo un error al intentar eliminar una categoria de la lista. Favor de intentar de nuevo.'));
     };
@@ -119,5 +115,5 @@ function showCategoryCard(category, quantity) {
 
     // div.appendChild(card);
 
-    productList.appendChild(card);
+    categoryList.appendChild(card);
 }
