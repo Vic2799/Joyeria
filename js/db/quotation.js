@@ -112,6 +112,7 @@ export function removeProductFromQuotation(productId) {
 }
 
 
+
 export function getAllCategories() {
     return new Promise((resolve, reject) => {
         getDatabase()
