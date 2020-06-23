@@ -5,22 +5,27 @@
 const API_URL = 'https://itacate.herokuapp.com/api/v1';
 let categoryList;
 
-fetch(`${API_URL}/categories`)
-    .then(response => response.json())
-    .then((categories) => {
-        categoryList = categories;
-        const categoryResult = document.querySelector('#result');
-    categoryResult.innerHTML = '';
+showCategories();
 
-        categoryList.forEach((category) => {
-            showCategoryCard(category);
+function showCategories() {
+    fetch(`${API_URL}/categories`)
+        .then(response => response.json())
+        .then((categories) => {
+            categoryList = categories;
+            const categoryResult = document.querySelector('#result');
+            categoryResult.innerHTML = '';
+
+            categoryList.forEach((category) => {
+                showCategoryCard(category);
+            })
         })
-    })
-    .catch(() => {
-        const errorModalBody = document.querySelector('#errorModal .modal-content > div.modal-body');
-        errorModalBody.textContent = 'Hubo un error obteniendo las categorias. Favor de intentar de nuevo.';
-        $('#errorModal').modal('show');
-    });
+        .catch(() => {
+            const errorModalBody = document.querySelector('#errorModal .modal-content > div.modal-body');
+            errorModalBody.textContent = 'Hubo un error obteniendo las categorias. Favor de intentar de nuevo.';
+            $('#errorModal').modal('show');
+        });
+}
+
 function showCategoryCard(category) {
     const categoryList = document.querySelector('#result');
 
@@ -44,10 +49,33 @@ function showCategoryCard(category) {
     removeProductButton.classList.add('btn', 'btn-link');
     removeProductButton.textContent = 'Eliminar';
     removeProductButton.onclick = () => {
-        removeCategoryFromQuotation(category.id)
-            .then(() => showQuotationCategories())
-            .catch(() =>
-                showModal('Error', 'Hubo un error al intentar eliminar una categoria de la lista. Favor de intentar de nuevo.'));
+
+        btnConfirmDelete.onclick = () => {
+            fetch(`${API_URL}/category/${category.id}`, {
+                method: 'DELETE'
+            })
+                .then(() => showCategories())
+                .catch(() => {
+                    const errorModalBody = document.querySelector('#errorModal .modal-content > div.modal-body');
+                    errorModalBody.textContent = 'Hubo un error obteniendo las categorias. Favor de intentar de nuevo.';
+                    $('#errorModal').modal('show');
+                });
+        }
+
+        $('#dialogDeleteCategory').modal('show');
+
+
+
+
+        // fetch(`${API_URL}/category/${category.id}`, {
+        //     method: 'DELETE'
+        // })
+        //     .then(() => showCategories())
+        //     .catch(() => {
+        //         const errorModalBody = document.querySelector('#errorModal .modal-content > div.modal-body');
+        //         errorModalBody.textContent = 'Hubo un error obteniendo las categorias. Favor de intentar de nuevo.';
+        //         $('#errorModal').modal('show');
+        //     });
     };
 
     cardTitle.textContent = `${category.title}`;
