@@ -1,4 +1,5 @@
 'use strict';
+import { getAllCategories } from '../js/db/quotation.js'
 
 
 const API_URL = 'https://itacate.herokuapp.com/api/v1';
@@ -9,7 +10,7 @@ fetch(`${API_URL}/categories`)
     .then((categories) => {
         categoryList = categories;
     })
-    .then(() => showCategories())
+    .then(() => showCategories(categories.id))
     .catch(() => {
         const errorModalBody = document.querySelector('#errorModal .modal-content > div.modal-body');
         errorModalBody.textContent = 'Hubo un error obteniendo las categorias. Favor de intentar de nuevo.';
@@ -21,7 +22,7 @@ function showCategories(categoryId) {
     const categoryResult = document.querySelector('#result');
     categoryResult.innerHTML = '';
     if (categoryId) {
-        categoryList.filter((category) => categories.id === categoryId)
+        categoryList.filter((category) => category.id === categoryId)
             .forEach((category) => {
                 showCategoryCard(category);
             })
@@ -54,6 +55,8 @@ function showCategoryCard(category) {
 
     const cardTitle = document.createElement('h6');
     cardTitle.classList.add('card-text');
+
+    cardTitle.textContent = `${category.title}`;
 
     const cardFooter = document.createElement('div');
     cardFooter.classList.add('card-footer', 'd-flex', 'justify-content-between', 'px-1');
