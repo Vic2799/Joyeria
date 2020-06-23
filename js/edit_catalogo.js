@@ -4,7 +4,6 @@
 
 const API_URL = 'https://itacate.herokuapp.com/api/v1';
 let categoryList;
-
 showCategories();
 
 function showCategories() {
@@ -45,45 +44,58 @@ function showCategoryCard(category) {
     const cardFooter = document.createElement('div');
     cardFooter.classList.add('card-footer', 'd-flex', 'justify-content-between', 'px-1');
 
+    const EditCategoryButton = document.createElement('button');
+    EditCategoryButton.classList.add('btn', 'btn-primary');
+    EditCategoryButton.textContent = 'Editar';
+    EditCategoryButton.onclick = () => {
+
+        btnConfirmChange.onclick = () => {
+           var newNameCategory = document.getElementById("NewTitle").value;
+    fetch(`${API_URL}/category/${category.id}`, {
+        method: 'PUT',
+       headers: {
+            'Content-Type': 'application/json;  charset=UTF-8'
+        },
+        body: JSON.stringify({"title": newNameCategory})
+    })  .then(response => response.json())
+        .then(() => showCategories())
+        .catch(() => {
+            const errorModalBody = document.querySelector('#errorModal .modal-content > div.modal-body');
+            errorModalBody.textContent = 'Hubo un error obteniendo las categorias. Favor de intentar de nuevo.';
+            $('#errorModal').modal('show');
+        });
+    }
+    $('#dialogChangeCategory').modal('show');
+};
+
     const removeProductButton = document.createElement('button');
     removeProductButton.classList.add('btn', 'btn-link');
     removeProductButton.textContent = 'Eliminar';
     removeProductButton.onclick = () => {
 
         btnConfirmDelete.onclick = () => {
-            fetch(`${API_URL}/category/${category.id}`, {
-                method: 'DELETE'
-            })
-                .then(() => showCategories())
-                .catch(() => {
-                    const errorModalBody = document.querySelector('#errorModal .modal-content > div.modal-body');
-                    errorModalBody.textContent = 'Hubo un error obteniendo las categorias. Favor de intentar de nuevo.';
-                    $('#errorModal').modal('show');
-                });
+       fetch(`${API_URL}/category/${category.id}`, {
+            method: 'DELETE'
+         })
+        .then(() => showCategories())
+             .catch(() => {
+             const errorModalBody = document.querySelector('#errorModal .modal-content > div.modal-body');
+             errorModalBody.textContent = 'Hubo un error obteniendo las categorias. Favor de intentar de nuevo.';
+                 $('#errorModal').modal('show');
+            });
+
         }
 
-        $('#dialogDeleteCategory').modal('show');
-
-
-
-
-        // fetch(`${API_URL}/category/${category.id}`, {
-        //     method: 'DELETE'
-        // })
-        //     .then(() => showCategories())
-        //     .catch(() => {
-        //         const errorModalBody = document.querySelector('#errorModal .modal-content > div.modal-body');
-        //         errorModalBody.textContent = 'Hubo un error obteniendo las categorias. Favor de intentar de nuevo.';
-        //         $('#errorModal').modal('show');
-        //     });
+             $('#dialogDeleteCategory').modal('show');
     };
+
 
     cardTitle.textContent = `${category.title}`;
 
     cardBody.appendChild(cardTitle);
 
     cardFooter.appendChild(removeProductButton);
-
+    cardFooter.appendChild(EditCategoryButton);
     // card.appendChild(img);
     // card.append(document.createElement('hr')); // add separator
     card.appendChild(cardBody);
