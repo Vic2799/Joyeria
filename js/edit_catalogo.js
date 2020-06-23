@@ -106,7 +106,7 @@ function showCategoryCard(category) {
     categoryList.appendChild(card);
 }
 
-function removeCategoryFromQuotation(categoryId) {
+/*function removeCategoryFromQuotation(categoryId) {
     return new Promise((resolve, reject) => {
         getDatabase()
             .then(db => {
@@ -125,4 +125,24 @@ function removeCategoryFromQuotation(categoryId) {
                 };
             });
     });
+}*/
+    btnConfirmCreation.onclick = () => {
+       var newCategory = document.getElementById("CreateCategory").value;
+fetch(`${API_URL}/category`, {
+    method: 'POST',
+   headers: {
+        'Content-Type': 'application/json;  charset=UTF-8'
+    },
+    body: JSON.stringify({"title": newCategory})
+})  .then(response => response.json())
+    .then(() => showCategories())
+    .catch(() => {
+        const errorModalBody = document.querySelector('#errorModal .modal-content > div.modal-body');
+        errorModalBody.textContent = 'Hubo un error obteniendo las categorias. Favor de intentar de nuevo.';
+        $('#errorModal').modal('show');
+    });
 }
+//$('#dialogCreateCategory').modal('show');
+
+
+

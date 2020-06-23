@@ -65,12 +65,34 @@
       </div>
     </div>
   </div>
+  <div id="dialogCreateCategory" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Nueva categoria</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <p>
+                Nombre
+              <input type="text" class="form-control" id="CreateCategory" placeholder="Categoria">
+            </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-link" data-dismiss="modal">Cancelar</button>
+          <button id="btnConfirmCreation" type="button" class="btn btn-success" data-dismiss="modal">Crear</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
 
   <div class="jumbotron text-center">
     <h1>Categorias</h1>
     <div align=right>
-     <a id="NewCategory" align=right class="btn btn-primary" type="submit">Agregar categoria</a>
+     <a data-toggle="modal" data-target="#dialogCreateCategory" align=right class="btn btn-primary" type="button">Agregar categoria</a>
      <a href="index.html" align=right class="btn btn-primary" type="submit">Regresar a Cotizador</a>
 
     </div>
