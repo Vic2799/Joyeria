@@ -9,35 +9,18 @@ fetch(`${API_URL}/categories`)
     .then(response => response.json())
     .then((categories) => {
         categoryList = categories;
+        const categoryResult = document.querySelector('#result');
+    categoryResult.innerHTML = '';
+
+        categoryList.forEach((category) => {
+            showCategoryCard(category);
+        })
     })
-    .then(() => showCategories(categories.id))
     .catch(() => {
         const errorModalBody = document.querySelector('#errorModal .modal-content > div.modal-body');
         errorModalBody.textContent = 'Hubo un error obteniendo las categorias. Favor de intentar de nuevo.';
         $('#errorModal').modal('show');
     });
-
-
-function showCategories(categoryId) {
-    const categoryResult = document.querySelector('#result');
-    categoryResult.innerHTML = '';
-    if (categoryId) {
-        categoryList.filter((category) => category.id === categoryId)
-            .forEach((category) => {
-                showCategoryCard(category);
-            })
-
-    } else {
-        categoryList.forEach((category) => {
-            showCategoryCard(category);
-        })
-    }
-
-
-
-}
-
-
 function showCategoryCard(category) {
     const categoryList = document.querySelector('#result');
 
@@ -82,6 +65,7 @@ function showCategoryCard(category) {
 
     categoryList.appendChild(card);
 }
+
 function removeCategoryFromQuotation(categoryId) {
     return new Promise((resolve, reject) => {
         getDatabase()
