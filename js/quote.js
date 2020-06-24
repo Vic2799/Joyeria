@@ -1,6 +1,6 @@
 'use strict';
 
-import { getAllProducts, putQuotationProduct, removeProductFromQuotation } from '../js/db/quotation.js'
+import { getAllProducts, putQuotationProduct, removeProductFromQuotation } from './db/quotation.js'
 
 const API_URL = 'https://itacate.herokuapp.com/api/v1';
 
@@ -46,6 +46,72 @@ productsVolume.onclick = (() => {
         $('#optionModal').modal('show');
     }
 });
+
+btnQuote.onclick = (event) => {
+    event.preventDefault();
+
+    if (!quotationForm.checkValidity()) {
+        quotationForm.reportValidity();
+    } else {
+        const quotBtnSpinner = document.querySelector('#btnQuote > #spnQuotation');
+        const quotBtnMessage = document.querySelector('#btnQuote > #msgQuotation');
+
+        quotBtnSpinner.hidden = false;
+        quotBtnMessage.textContent = 'Cotizando...';
+        btnQuote.disabled = true;
+
+        const formData = new FormData(quotationForm);
+
+        getAllProducts()
+            .then(quotationProducts => {
+                quotationProducts = quotationProducts.map(quotProduct => {
+                    return {
+                        id: quotProduct.product_id,
+                        quantity: quotProduct.quantity
+                    }
+                });
+
+                const reqBody = {
+                    origin_zip_code: 80000,
+                    destination_zip_code: formData.get('zipCode'),
+                    products: quotationProducts,
+                    package_volume: isCustomVolume ? formData.get('volume') : null, // null values if not custom so backend 
+                    package_weight: isCustomWeight ? formData.get('weight') : null, // calculates actual volume/weight
+                }
+
+                return fetch(`${API_URL}/quotation`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(reqBody),
+                })
+                    .then(res => {
+                        if (res.ok) {
+                            return res.json();
+                        } else {
+                            showModal('Error', 'No se pudo crear la cotización correctamente.');
+
+                            const quotBtnSpinner = document.querySelector('#btnQuote > #spnQuotation');
+                            const quotBtnMessage = document.querySelector('#btnQuote > #msgQuotation');
+
+                            quotBtnSpinner.hidden = true;
+                            quotBtnMessage.textContent = 'Cotizar';
+                            btnQuote.disabled = false;
+                        }
+                    })
+                    .then(quotation => {
+                        if (quotation) {
+                            const url = new URL(window.location);
+                            url.pathname = '/cotizaciones.html';
+                            url.searchParams.append('quotation', quotation.id);
+                            location.href = url.toString();
+                        }
+                    })
+            })
+            .catch(error => console.error(error));
+    }
+}
 
 
 function showQuotationProducts() {
