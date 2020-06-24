@@ -96,36 +96,14 @@ function showCategoryCard(category) {
 
     cardFooter.appendChild(removeProductButton);
     cardFooter.appendChild(EditCategoryButton);
-    // card.appendChild(img);
-    // card.append(document.createElement('hr')); // add separator
-    card.appendChild(cardBody);
+   card.appendChild(cardBody);
     card.appendChild(cardFooter);
 
-    // div.appendChild(card);
+
 
     categoryList.appendChild(card);
 }
 
-/*function removeCategoryFromQuotation(categoryId) {
-    return new Promise((resolve, reject) => {
-        getDatabase()
-            .then(db => {
-                const transaction = db.transaction(['category'], 'readwrite');
-
-                const objectStore = transaction.objectStore('category');
-
-                objectStore.delete(categoryId);
-
-                transaction.oncomplete = () => {
-                    resolve();
-                };
-
-                transaction.onerror = () => {
-                    reject();
-                };
-            });
-    });
-}*/
     btnConfirmCreation.onclick = () => {
        var newCategory = document.getElementById("CreateCategory").value;
 fetch(`${API_URL}/category`, {
