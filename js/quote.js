@@ -78,7 +78,6 @@ btnQuote.onclick = (event) => {
                     package_volume: isCustomVolume ? formData.get('volume') : null, // null values if not custom so backend 
                     package_weight: isCustomWeight ? formData.get('weight') : null, // calculates actual volume/weight
                 }
-                console.log(JSON.stringify(reqBody));
 
                 return fetch(`${API_URL}/quotation`, {
                     method: 'POST',
@@ -101,9 +100,12 @@ btnQuote.onclick = (event) => {
                             btnQuote.disabled = false;
                         }
                     })
-                    .then(quotationId => {
-                        if (quotationId) {
-                            // TODO: Send to quotation detail
+                    .then(quotation => {
+                        if (quotation) {
+                            const url = new URL(window.location);
+                            url.pathname = '/cotizaciones.html';
+                            url.searchParams.append('quotation', quotation.id);
+                            location.href = url.toString();
                         }
                     })
             })
