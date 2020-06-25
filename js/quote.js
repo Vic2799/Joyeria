@@ -1,6 +1,6 @@
 'use strict';
 
-import { getAllProducts, putQuotationProduct, removeProductFromQuotation } from './db/quotation.js'
+import { getAllProducts, putQuotationProduct, removeProduct, removeAllProducts } from './db/quotation.js'
 
 const API_URL = 'https://itacate.herokuapp.com/api/v1';
 
@@ -88,9 +88,17 @@ btnQuote.onclick = (event) => {
                 })
                     .then(res => {
                         if (res.ok) {
-                            return res.json();
+                            res.json().then((quotation) => {
+                                removeAllProducts()
+                                    .then(() => {
+                                        const url = new URL(window.location);
+                                        url.pathname = '/cotizaciones.html';
+                                        url.searchParams.append('quotation', quotation.id);
+                                        location.href = url.toString();
+                                    });
+                            });
                         } else {
-                            showModal('Error', 'No se pudo crear la cotización correctamente.');
+                            showModal('Error', 'No se pudo crear la cotización correctamente. Favor de validar los datos de envío y que la cotización contenga productos.');
 
                             const quotBtnSpinner = document.querySelector('#btnQuote > #spnQuotation');
                             const quotBtnMessage = document.querySelector('#btnQuote > #msgQuotation');
@@ -99,17 +107,18 @@ btnQuote.onclick = (event) => {
                             quotBtnMessage.textContent = 'Cotizar';
                             btnQuote.disabled = false;
                         }
-                    })
-                    .then(quotation => {
-                        if (quotation) {
-                            const url = new URL(window.location);
-                            url.pathname = '/cotizaciones.html';
-                            url.searchParams.append('quotation', quotation.id);
-                            location.href = url.toString();
-                        }
-                    })
+                    });
             })
-            .catch(error => console.error(error));
+            .catch(() => {
+                showModal('Error', 'Hubo un error al intentar realizar la cotización. Favor de intentar de nuevo.');
+
+                const quotBtnSpinner = document.querySelector('#btnQuote > #spnQuotation');
+                const quotBtnMessage = document.querySelector('#btnQuote > #msgQuotation');
+
+                quotBtnSpinner.hidden = true;
+                quotBtnMessage.textContent = 'Cotizar';
+                btnQuote.disabled = false;
+            });
     }
 }
 
@@ -230,7 +239,7 @@ function showProductCard(product, quantity) {
     removeProductButton.classList.add('btn', 'btn-link');
     removeProductButton.textContent = 'Eliminar';
     removeProductButton.onclick = () => {
-        removeProductFromQuotation(product.id)
+        removeProduct(product.id)
             .then(() => showQuotationProducts())
             .catch(() =>
                 showModal('Error', 'Hubo un error al intentar eliminar un producto de la cotización. Favor de intentar de nuevo.'));

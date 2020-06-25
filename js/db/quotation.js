@@ -90,7 +90,7 @@ export function putQuotationProduct(productId, productQuantity) {
     });
 }
 
-export function removeProductFromQuotation(productId) {
+export function removeProduct(productId) {
     return new Promise((resolve, reject) => {
         getDatabase()
             .then(db => {
@@ -111,7 +111,26 @@ export function removeProductFromQuotation(productId) {
     });
 }
 
+export function removeAllProducts() {
+    return new Promise((resolve, reject) => {
+        getDatabase()
+            .then(db => {
+                const transaction = db.transaction(['product'], 'readwrite');
 
+                const objectStore = transaction.objectStore('product');
+
+                objectStore.clear();
+
+                transaction.oncomplete = () => {
+                    resolve();
+                };
+
+                transaction.onerror = () => {
+                    reject();
+                };
+            });
+    });
+}
 
 export function getAllCategories() {
     return new Promise((resolve, reject) => {
