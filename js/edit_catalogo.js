@@ -50,7 +50,7 @@ function showCategoryCard(category) {
     EditCategoryButton.onclick = () => {
 
         btnConfirmChange.onclick = () => {
-           var newNameCategory = document.getElementById("NewTitle").value;
+           let newNameCategory = document.getElementById("NewTitle").value;
     fetch(`${API_URL}/category/${category.id}`, {
         method: 'PUT',
        headers: {
