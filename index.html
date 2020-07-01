@@ -44,6 +44,11 @@
     </div>
 
     <div class="container">
+        <div>
+            <p>
+                <a href="" data-toggle="modal" data-target="#dialogCreateCategory" align=left class="btn btn-success" type="button"> + Agregar producto</a>
+            </p>
+        </div>
         <div class="d-flex justify-content-center mb-4">
             <div id="menu" class="btn-group btn-group flex-wrap" role="group" aria-label="Categories">
             </div>
@@ -73,7 +78,47 @@
             </div>
         </div>
     </div>
+    <div id="dialogChangeProduct" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Editar producto</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    Nuevo Nombre
+                  <input type="text" class="form-control" id="newTitleProduct" placeholder="Producto">
 
+                  <div class="dropdown show">
+                    <a class="btn btn-clear dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Cambiar categoria
+                    </a>
+
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+
+                    </div>
+                  </div>
+                    Nuevo Peso en gramos
+                    <input type="text" class="form-control" id="newWeight" placeholder="Peso">
+                   Nuevo Tamaño en centimetros
+                   <input type="text" class="form-control" id="newWidth" placeholder="Ancho">
+                   <input type="text" class="form-control" id="newHeight" placeholder="Alto">
+                   <input type="text" class="form-control" id="newLength" placeholder="profundidad">
+                    Nuevo Precio
+                    <input type="text" class="form-control" id="newPrice" placeholder="Precio">
+
+                </p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-link" data-dismiss="modal">Cancelar</button>
+              <button id="btnConfirmChange" type="button" class="btn btn-success" data-dismiss="modal">Editar</button>
+            </div>
+          </div>
+        </div>
+      </div>
 
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="js/vendor/modernizr-3.11.2.min.js"></script>
