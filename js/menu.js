@@ -84,13 +84,13 @@ function showProducts(categoryId) {
     const productResult = document.querySelector('#result');
     productResult.innerHTML = '';
     if (categoryId) {
-        Object.values(productMap).filter(( product) => product.category_id === categoryId)
+        Array.from(productMap.values()).filter( (product) => product.category_id === categoryId)
             .forEach((product) => {
                 showProductCard(product);
             })
 
     } else {
-        Object.values(productMap).forEach((product) => {
+        Array.from(productMap.values()).forEach((product) => {
             showProductCard(product);
         })
     }
@@ -158,24 +158,33 @@ function showProductCard(product) {
         const prod = productMap.get(product.id);
         console.log(prod);
         newTitleProduct.value = prod.title;
+        newWeight.value = prod.weight;
         newWidth.value = prod.width;
+        newHeight.value = prod.height;
+        newLength.value = prod.length;
+        newPrice.value = prod.unit_price;
         btnConfirmChange.onclick = () => {
             let newNameProduct = document.getElementById("newTitleProduct").value;
-
-
-        fetch(`${API_URL}/product/${category.id}`, {
+            let newWeightValue = document.getElementById("newWeight").value;
+            let newWidthValue = document.getElementById("newWidth").value;
+            let newHeightValue = document.getElementById("newHeight").value;
+            let newLengthValue = document.getElementById("newLength").value;
+            let newPriceValue = document.getElementById("newPrice").value;
+        fetch(`${API_URL}/product/${product.id}`, {
             method: 'PUT',
            headers: {
                 'Content-Type': 'application/json;  charset=UTF-8'
             },
-            body: JSON.stringify({"title": newNameProduct})
+            body: JSON.stringify({"title": newNameProduct, "weight":newWeightValue, "width":newWidthValue,
+                                    "height":newHeightValue, "length": newLengthValue, "unit_price": newPriceValue})
         })  .then(response => response.json())
-            .then(() => showCategories())
+            .then(() => showProducts())
             .catch(() => {
                 const errorModalBody = document.querySelector('#errorModal .modal-content > div.modal-body');
-                errorModalBody.textContent = 'Hubo un error obteniendo las categorias. Favor de intentar de nuevo.';
+                errorModalBody.textContent = 'Hubo un error editando el producto. Favor de intentar de nuevo.';
                 $('#errorModal').modal('show');
             });
+
         }
         $('#dialogChangeProduct').modal('show');
 

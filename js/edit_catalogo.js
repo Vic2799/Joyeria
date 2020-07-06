@@ -3,6 +3,7 @@
 
 
 const API_URL = 'https://itacate.herokuapp.com/api/v1';
+
 let categoryList;
 showCategories();
 

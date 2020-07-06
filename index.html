@@ -89,26 +89,45 @@
             </div>
             <div class="modal-body">
                 <p>
-                    Nuevo Nombre
-                  <input type="text" class="form-control" id="newTitleProduct" placeholder="Producto">
+                    <div class="col-auto">
+                        Nombre
+                        <input type="text" class="form-control" id="newTitleProduct" placeholder="Producto">
+                    </div>
 
-                  <div class="dropdown show">
-                    <a class="btn btn-clear dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      Cambiar categoria
-                    </a>
+                    <div class="dropdown show">
+                        <a class="btn btn-clear dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Cambiar categoria
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
 
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        Peso en gramos
+                        <input type="text" class="form-control" id="newWeight" placeholder="Peso">
 
                     </div>
-                  </div>
-                    Nuevo Peso en gramos
-                    <input type="text" class="form-control" id="newWeight" placeholder="Peso">
-                   Nuevo Tamaño en centimetros
-                   <input type="text" class="form-control" id="newWidth" placeholder="Ancho">
-                   <input type="text" class="form-control" id="newHeight" placeholder="Alto">
-                   <input type="text" class="form-control" id="newLength" placeholder="profundidad">
-                    Nuevo Precio
+                    <div class="col-auto">
+                        Tamaño
+                        <form>
+                        <div class="form-row" >
+                            <div class="col-auto" >
+                             Ancho: <input type="text" class="form-control" id="newWidth" placeholder="Ancho" maxlength="4" size="4">
+                            </div>
+                            <div class="col-auto">
+                             Alto: <input type="text" class="form-control" id="newHeight" placeholder="Alto" maxlength="4" size="4">
+                            </div>
+                            <div class="col-auto">
+                             Profundidad:  <input type="text" class="form-control" id="newLength" placeholder="profundidad" maxlength="4" size="4">
+                            </div>
+                         </div>
+                        </form>
+                    </div>
+                   <div class="col-auto">
+                     Precio
                     <input type="text" class="form-control" id="newPrice" placeholder="Precio">
+                   </div>
+
 
                 </p>
             </div>
