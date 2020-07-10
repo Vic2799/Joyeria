@@ -9,12 +9,7 @@ const API_URL = 'https://itacate.herokuapp.com/api/v1';
 fetch(`${API_URL}/products`)
     .then(response => response.json())
     .then((products) => {
-        /* productMap = products.reduce((res, obj)=> {
-            res[obj.id] = obj;
-            return res;
-        }, {});*/
         productMap = new Map(products.map( p => [p.id, p]))
-        console.log(productMap)
     })
     .then(() => showMenu())
     .catch(() => {
@@ -65,6 +60,7 @@ function showMenu() {
 
                     categoryButton.classList.remove('btn-secondary');
                     categoryButton.classList.add('btn-primary');
+
                     showProducts(category.id);
                 });
                 categoryMenu.appendChild(categoryButton);
@@ -97,6 +93,7 @@ function showProducts(categoryId) {
 }
 
 function showProductCard(product) {
+
     const productListResult = document.querySelector('#result');
 
     const card = document.createElement('div');
@@ -154,38 +151,102 @@ function showProductCard(product) {
 
 
     cardEditButton.onclick = () => {
-        console.log(typeof productMap);
         const prod = productMap.get(product.id);
-        console.log(prod);
         newTitleProduct.value = prod.title;
         newWeight.value = prod.weight;
         newWidth.value = prod.width;
+
+        //valor de categoria en input con id newCategory
+        fetch(`${API_URL}/categories`)
+        .then(response => response.json())
+        .then((categories) => {
+            categoryList = categories;
+            categories.forEach((category) => {
+                if(category.id == prod.category_id){
+                    newCategory.value = category.title;
+                 }
+
+            });
+        }).catch((error) => {
+            console.log(error);
+            const errorModalBody = document.querySelector('#errorModal .modal-content > div.modal-body');
+            errorModalBody.textContent = 'Hubo un problema al obtener las categorías, por favor intente más tarde.';
+            $('#errorModal').modal('show');
+        });
+
         newHeight.value = prod.height;
         newLength.value = prod.length;
         newPrice.value = prod.unit_price;
+
+         //obtener las categorias para el dropdown
+         fetch(`${API_URL}/categories`)
+            .then(response => response.json())
+            .then((categories) => {
+                categoryList = categories;
+                const categoryResult = document.querySelector('#dropdownMenuLink');
+
+                categoryResult.innerHTML = '';
+
+                categoryList.forEach((category) => {
+
+                    const a = document.createElement('button');
+                    a.classList.add("dropdown-item");
+                    a.textContent = category.title;
+                    a.onclick = () => {
+                        newCategory.value = a.textContent;
+
+                    }
+                    categoryResult.appendChild(a);
+                })
+            })
+            .catch(() => {
+                const errorModalBody = document.querySelector('#errorModal .modal-content > div.modal-body');
+                errorModalBody.textContent = 'Hubo un error obteniendo las categorias. Favor de intentar de nuevo.';
+                $('#errorModal').modal('show');
+            });
+
         btnConfirmChange.onclick = () => {
             let newNameProduct = document.getElementById("newTitleProduct").value;
+            let newCategoryValue = newCategory.value;
             let newWeightValue = document.getElementById("newWeight").value;
             let newWidthValue = document.getElementById("newWidth").value;
             let newHeightValue = document.getElementById("newHeight").value;
             let newLengthValue = document.getElementById("newLength").value;
             let newPriceValue = document.getElementById("newPrice").value;
-        fetch(`${API_URL}/product/${product.id}`, {
-            method: 'PUT',
-           headers: {
-                'Content-Type': 'application/json;  charset=UTF-8'
-            },
-            body: JSON.stringify({"title": newNameProduct, "weight":newWeightValue, "width":newWidthValue,
-                                    "height":newHeightValue, "length": newLengthValue, "unit_price": newPriceValue})
-        })  .then(response => response.json())
-            .then(() => showProducts())
-            .catch(() => {
+            let CategoryIdValue;
+
+            fetch(`${API_URL}/categories`)
+            .then(response => response.json())
+            .then((categories) => {
+                categoryList = categories;
+                categories.forEach((category) => {
+                    if(newCategoryValue == category.title)
+                            CategoryIdValue = category.id;
+
+                });
+            }).catch((error) => {
+                console.log(error);
                 const errorModalBody = document.querySelector('#errorModal .modal-content > div.modal-body');
-                errorModalBody.textContent = 'Hubo un error editando el producto. Favor de intentar de nuevo.';
+                errorModalBody.textContent = 'Hubo un problema al obtener las categorías, por favor intente más tarde.';
                 $('#errorModal').modal('show');
             });
+             //editar los datos
+            fetch(`${API_URL}/product/${product.id}`, {
+                method: 'PUT',
+            headers: {
+                    'Content-Type': 'application/json;  charset=UTF-8'
+                },
+                body: JSON.stringify({"title": newNameProduct,"category_id":CategoryIdValue, "weight":newWeightValue, "width":newWidthValue,
+                                        "height":newHeightValue, "length": newLengthValue, "unit_price": newPriceValue})
+            })  .then(response => response.json())
+                .then(() => showMenu())
+                .catch(() => {
+                    const errorModalBody = document.querySelector('#errorModal .modal-content > div.modal-body');
+                    errorModalBody.textContent = 'Hubo un error editando el producto. Favor de intentar de nuevo.';
+                    $('#errorModal').modal('show');
+                });
 
-        }
+            }
         $('#dialogChangeProduct').modal('show');
 
     };
@@ -241,3 +302,40 @@ const errorToastHtml = `
     </div>
 </div>
 `;
+btnCreateProduct.onclick = () =>{
+
+    //obtener las categorias para el dropdown
+    fetch(`${API_URL}/categories`)
+    .then(response => response.json())
+    .then((categories) => {
+        categoryList = categories;
+        const categoryResult = document.querySelector('#dropdownMenuLink');
+
+        categoryResult.innerHTML = '';
+
+        categoryList.forEach((category) => {
+
+            const button = document.createElement('button');
+            button.classList.add("dropdown-item");
+            button.textContent = category.title;
+            button.onclick = () => {
+                createProductCategory.value = button.textContent;
+
+            }
+            categoryResult.appendChild(button);
+        })
+    })
+    .catch(() => {
+        const errorModalBody = document.querySelector('#errorModal .modal-content > div.modal-body');
+        errorModalBody.textContent = 'Hubo un error obteniendo las categorias. Favor de intentar de nuevo.';
+        $('#errorModal').modal('show');
+    });
+    $('#dialogCreateProduct').modal('show');
+};
+
+btnConfirmCreationProduct.onclick = () => {
+    var createProduct = document.getElementById("createProduct").value;
+
+}
+
+
