@@ -47,7 +47,7 @@
 
         <div>
             <p>
-                <button type="button"  id="btnCreateProduct" class="btn btn-success">+ Agregar producto</button>
+                <button type="button" id="btnCreateProduct" class="btn btn-success">+ Agregar producto</button>
             </p>
         </div>
 
@@ -83,31 +83,32 @@
     </div>
     <div id="dialogChangeProduct" class="modal" tabindex="-1" role="dialog">
         <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">Editar producto</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-                <p>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Editar producto</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>
                     <div class="col-auto">
                         Nombre
                         <input type="text" class="form-control" id="newTitleProduct" placeholder="Producto">
                     </div>
                     <br>
-                     <div class="btn-group">
-                        <a class="btn btn-clear dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Cambiar categoria
-                        </a>
-                        <div id="dropdownMenuLink" class="dropdown-menu" aria-labelledby="dropdownMenuLink">
 
+                    <div class="col-auto">
+                        Categor&iacute;a
+                        <div class="dropdown">
+                            <a id="newCategory" class="btn btn-clear border dropdown-toggle" href="#" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 
+                            </a>
+                            <div id="categoryDropdownMenu" class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            </div>
                         </div>
-                        <input type="text" class="form-control" id="newCategory" placeholder="Categoria"/>
                     </div>
-                    <br>
                     <br>
                     <div class="col-auto">
                         Peso en gramos
@@ -117,93 +118,102 @@
                     <div class="col-auto">
                         Tamaño
                         <form>
-                        <div class="form-row" >
-                            <div class="col-auto" >
-                             Ancho: <input type="text" class="form-control" id="newWidth" placeholder="Ancho" maxlength="4" size="4">
+                            <div class="form-row">
+                                <div class="col-auto">
+                                    Ancho: <input type="text" class="form-control" id="newWidth" placeholder="Ancho"
+                                        maxlength="4" size="4">
+                                </div>
+                                <div class="col-auto">
+                                    Alto: <input type="text" class="form-control" id="newHeight" placeholder="Alto"
+                                        maxlength="4" size="4">
+                                </div>
+                                <div class="col-auto">
+                                    Profundidad: <input type="text" class="form-control" id="newLength"
+                                        placeholder="profundidad" maxlength="4" size="4">
+                                </div>
                             </div>
-                            <div class="col-auto">
-                             Alto: <input type="text" class="form-control" id="newHeight" placeholder="Alto" maxlength="4" size="4">
-                            </div>
-                            <div class="col-auto">
-                             Profundidad:  <input type="text" class="form-control" id="newLength" placeholder="profundidad" maxlength="4" size="4">
-                            </div>
-                         </div>
                         </form>
                     </div>
-                   <div class="col-auto">
-                     Precio
-                    <input type="text" class="form-control" id="newPrice" placeholder="Precio">
-                   </div>
+                    <div class="col-auto">
+                        Precio
+                        <input type="text" class="form-control" id="newPrice" placeholder="Precio">
+                    </div>
 
 
-                </p>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-link" data-dismiss="modal">Cancelar</button>
-              <button id="btnConfirmChange" type="button" class="btn btn-success" data-dismiss="modal">Editar</button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div id="dialogCreateProduct" class="modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">Nuevo producto</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-                <p>
-                    Nombre
-                  <input type="text" class="form-control" id="createProduct" placeholder="Producto">
-                  <br>
-                  <div class="btn-group">
-                     <a class="btn btn-clear dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                     Categoria
-                     </a>
-                     <div id="dropdownMenuLink" class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-
-                     </div>
-                     <input type="text" class="form-control" id="createProductCategory" placeholder="Categoria"/>
-                 </div>
-                 <br>
-                 <br>
-                 <div class="col-auto">
-                     Peso en gramos
-                     <input type="text" class="form-control" id="createProductWeight" placeholder="Peso">
-
-                 </div>
-                 <div class="col-auto">
-                     Tamaño
-                     <form>
-                     <div class="form-row" >
-                         <div class="col-auto" >
-                          Ancho: <input type="text" class="form-control" id="createProductWidth" placeholder="Ancho" maxlength="4" size="4">
-                         </div>
-                         <div class="col-auto">
-                          Alto: <input type="text" class="form-control" id="createProductHeight" placeholder="Alto" maxlength="4" size="4">
-                         </div>
-                         <div class="col-auto">
-                          Profundidad:  <input type="text" class="form-control" id="createProductLength" placeholder="profundidad" maxlength="4" size="4">
-                         </div>
-                      </div>
-                     </form>
-                 </div>
-                <div class="col-auto">
-                  Precio
-                 <input type="text" class="form-control" id="createProdcutPrice" placeholder="Precio">
+                    </p>
                 </div>
-                </p>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-link" data-dismiss="modal">Cancelar</button>
+                    <button id="btnConfirmChange" type="button" class="btn btn-success"
+                        data-dismiss="modal">Editar</button>
+                </div>
             </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-link" data-dismiss="modal">Cancelar</button>
-              <button id="btnConfirmCreationProduct" type="button" class="btn btn-success" data-dismiss="modal">Crear</button>
-            </div>
-          </div>
         </div>
-      </div>
+    </div>
+    <div id="dialogCreateProduct" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Nuevo producto</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        Nombre
+                        <input type="text" class="form-control" id="createProduct" placeholder="Producto">
+                        <br>
+                    <div class="dropdown">
+                        <a class="btn btn-clear dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                            Categoria
+                        </a>
+                        <div id="dropdownMenuLink" class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+
+                        </div>
+                        <input type="text" class="form-control" id="createProductCategory" placeholder="Categoria" />
+                    </div>
+                    <br>
+                    <br>
+                    <div class="col-auto">
+                        Peso en gramos
+                        <input type="text" class="form-control" id="createProductWeight" placeholder="Peso">
+
+                    </div>
+                    <div class="col-auto">
+                        Tamaño
+                        <form>
+                            <div class="form-row">
+                                <div class="col-auto">
+                                    Ancho: <input type="text" class="form-control" id="createProductWidth"
+                                        placeholder="Ancho" maxlength="4" size="4">
+                                </div>
+                                <div class="col-auto">
+                                    Alto: <input type="text" class="form-control" id="createProductHeight"
+                                        placeholder="Alto" maxlength="4" size="4">
+                                </div>
+                                <div class="col-auto">
+                                    Profundidad: <input type="text" class="form-control" id="createProductLength"
+                                        placeholder="profundidad" maxlength="4" size="4">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-auto">
+                        Precio
+                        <input type="text" class="form-control" id="createProdcutPrice" placeholder="Precio">
+                    </div>
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-link" data-dismiss="modal">Cancelar</button>
+                    <button id="btnConfirmCreationProduct" type="button" class="btn btn-success"
+                        data-dismiss="modal">Crear</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="js/vendor/modernizr-3.11.2.min.js"></script>
