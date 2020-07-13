@@ -159,6 +159,7 @@ function showProductCard(product) {
         newHeight.value = prod.height;
         newLength.value = prod.length;
         newPrice.value = prod.unit_price;
+        FileLang.value = prod.image_url;
 
         //obtener las categorias para el dropdown
         fetch(`${API_URL}/categories`)
@@ -205,7 +206,7 @@ function showProductCard(product) {
             let newLengthValue = document.getElementById("newLength").value;
             let newPriceValue = document.getElementById("newPrice").value;
             let newCategoryId = document.querySelector('#categoryDropdownMenu > .active').dataset.id;
-
+            let newImageUrl = document.getElementById("FileLang").value;
             //editar los datos
             fetch(`${API_URL}/product/${product.id}`, {
                 method: 'PUT',
@@ -213,7 +214,7 @@ function showProductCard(product) {
                     'Content-Type': 'application/json;  charset=UTF-8'
                 },
                 body: JSON.stringify({
-                    "title": newNameProduct, "category_id": newCategoryId, "weight": newWeightValue, "width": newWidthValue,
+                    "title": newNameProduct, "image_url": newImageUrl, "category_id": newCategoryId, "weight": newWeightValue, "width": newWidthValue,
                     "height": newHeightValue, "length": newLengthValue, "unit_price": newPriceValue
                 })
             }).then(response => response.json())
@@ -279,39 +280,71 @@ const errorToastHtml = `
 </div>
 `;
 btnCreateProduct.onclick = () => {
-
+    title.textContent = "Crear producto";
+    btnConfirmChange.textContent = "Crear";
     //obtener las categorias para el dropdown
     fetch(`${API_URL}/categories`)
-        .then(response => response.json())
-        .then((categories) => {
-            categoryList = categories;
-            const categoryResult = document.querySelector('#dropdownMenuLink');
+            .then(response => response.json())
+            .then((categories) => {
+                let selectedCategoryElement;
+                const categoryDropdown = document.querySelector('#categoryDropdownMenu');
 
-            categoryResult.innerHTML = '';
+                categoryDropdown.innerHTML = '';
 
-            categoryList.forEach((category) => {
 
-                const button = document.createElement('button');
-                button.classList.add("dropdown-item");
-                button.textContent = category.title;
-                button.onclick = () => {
-                    createProductCategory.value = button.textContent;
+                categoryList.forEach((category) => {
+                    const a = document.createElement('button');
+                    a.classList.add('dropdown-item');
+                    a.dataset.id = category.id;
+                    a.textContent = category.title;
 
-                }
-                categoryResult.appendChild(button);
+                    if (category.id) {
+                        //a.classList.add('active');
+                        newCategory.textContent = a.textContent;
+                        selectedCategoryElement = a;
+                    }
+                    a.onclick = () => {
+                        // unselect previously selected category element
+                        selectedCategoryElement.classList.remove('active');
+                        newCategory.textContent = a.textContent;
+                        a.classList.add('active');
+                        selectedCategoryElement = a;
+                    }
+                    categoryDropdown.appendChild(a);
+                })
             })
-        })
-        .catch(() => {
-            const errorModalBody = document.querySelector('#errorModal .modal-content > div.modal-body');
-            errorModalBody.textContent = 'Hubo un error obteniendo las categorias. Favor de intentar de nuevo.';
-            $('#errorModal').modal('show');
-        });
-    $('#dialogCreateProduct').modal('show');
+            .catch(() => {
+                const errorModalBody = document.querySelector('#errorModal .modal-content > div.modal-body');
+                errorModalBody.textContent = 'Hubo un error obteniendo las categorias. Favor de intentar de nuevo.';
+                $('#errorModal').modal('show');
+            });
+            btnConfirmChange.onclick = () => {
+                let createProduct = document.getElementById("newTitleProduct").value;
+                let createWeightValue = document.getElementById("newWeight").value;
+                let createWidthValue = document.getElementById("newWidth").value;
+                let createHeightValue = document.getElementById("newHeight").value;
+                let createLengthValue = document.getElementById("newLength").value;
+                let createPriceValue = document.getElementById("newPrice").value;
+                let createCategoryId = document.querySelector('#categoryDropdownMenu > .active').dataset.id;
+                let createImageUrl = document.getElementById("FileLang").value;
+
+                fetch(`${API_URL}/products`, {
+                    method: 'POST',
+                   headers: {
+                        'Content-Type': 'application/json;  charset=UTF-8'
+                    },
+                    body: JSON.stringify({"title": createProduct,"image_url":createImageUrl, "category_id": createCategoryId, "weight": createWeightValue, "width": createWidthValue,
+                    "height": createHeightValue, "length": createLengthValue, "unit_price": createPriceValue
+                     })
+                })  .then(response => response.json())
+                    .then(() => showCategories())
+                    .catch(() => {
+                        const errorModalBody = document.querySelector('#errorModal .modal-content > div.modal-body');
+                        errorModalBody.textContent = 'Hubo un error obteniendo las categorias. Favor de intentar de nuevo.';
+                        $('#errorModal').modal('show');
+                    });
+            }
+            $('#dialogChangeProduct').modal('show');
 };
-
-btnConfirmCreationProduct.onclick = () => {
-    var createProduct = document.getElementById("createProduct").value;
-
-}
 
 
