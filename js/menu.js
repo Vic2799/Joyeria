@@ -279,7 +279,15 @@ const errorToastHtml = `
     </div>
 </div>
 `;
+
 btnCreateProduct.onclick = () => {
+    newTitleProduct.value= "";
+    newWeight.value = "";
+    newWidth.value = "";
+    newHeight.value = "";
+    newLength.value = "";
+    newPrice.value = "";
+    FileLang.value = "";
     title.textContent = "Crear producto";
     btnConfirmChange.textContent = "Crear";
     //obtener las categorias para el dropdown
